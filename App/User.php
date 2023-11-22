@@ -8,12 +8,6 @@ class User implements UserInterface
 {
      private $id;
 
-     private $email;
-
-     private $password;
-
-     private $user_type;
-
      private  $fullname;
 
      private $db;
@@ -25,14 +19,6 @@ class User implements UserInterface
       */
      public function __construct(DatabaseConnection $db) {
          $this->db = $db;
-     }
-
-     public function authenticate($email, $password) {
-            $emailvalidate = $this->EmailUserExist($email);
-            if($emailvalidate && $this->verify($password , $emailvalidate["password"])) {
-                   return true;
-            }
-            return false;
      }
 
      public function getId() {
@@ -127,6 +113,14 @@ class User implements UserInterface
         $sql = "SELECT * FROM users WHERE id = ?";
         $stmt = $this->db->getConnection()->prepare($sql);
         $stmt->execute([$user_id]);
+        return $stmt->fetch();
+     }
+
+
+     public function getallUserCarts($user_id) {
+        $sql = "SELECT * FROM carts WHERE user_id = ?";
+        $stmt = $this->db->getConnection()->prepare($sql);
+        $stmt->execute();
         return $stmt->fetch();
      }
 
