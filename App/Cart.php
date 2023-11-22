@@ -1,6 +1,5 @@
 <?php
 
-require_once "Interface/cartInterface.php";
 /**
  * cart class Definition
  */
@@ -47,21 +46,22 @@ class cart
      }
 
 
-     public function addProducttoCart($user_id, $product_id, $quantity) {
+     public function addProducttoCart($user_id, $product_id, $product_quantity) {
            $sql = 'INSERT INTO carts (user_id, product_id, product_quantity) VALUES (?,?,?)';
            $stmt = $this->db->getConnection()->prepare($sql);
            $params = [
-               $user_id, $product_id, $quantity
+               $user_id, $product_id, $product_quantity
            ];
            $stmt->execute($params);
      }
 
 
-     public function updateCart($user_id, $quantity , $product_id) {
-        $sql = 'UPDATE carts SET quantity = ? WHERE product_id = ?';
+     public function updateCart($user_id, $product_quantity , $cart_id) {
+        // Check if user is valid and cart item is not empty
+        $sql = 'UPDATE carts SET product_quantity = ? WHERE id = ?';
         $stmt = $this->db->getConnection()->prepare($sql);
         $params = [
-             $user_id,$quantity,$product_id
+             $user_id, $product_quantity, $cart_id
         ];
         $stmt->execute($params);
      }
